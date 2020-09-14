@@ -1,0 +1,56 @@
+# province
+# FROM = old owner
+on_province_owner_change = {
+	events = {
+		japan.1
+	}
+
+	if = {
+		limit = {
+			owned_by = SRU
+			exists = ARA
+		}
+		ARA = {
+			set_country_flag = ARA_defeat_saruhan
+		}
+	}
+
+	clr_province_flag = tc_for_TC
+}
+
+# province
+# root = location, from = country doing it
+on_added_to_trade_company ={
+	if = {
+		limit = {
+			is_city = yes
+			NOT = { is_core = FROM }
+			FROM = {
+				OR = {
+					has_country_flag = trade_company
+					has_country_modifier = hab_ostende_company
+					has_country_modifier = portuguese_india_trade_co
+				}
+			}
+		}
+		add_core_construction = {
+			speed = 0
+			cost = 1
+		}
+		set_province_flag = tc_for_TC
+	}
+}
+
+# province
+# root = location, from = country doing it
+on_removed_from_company ={
+	if = {
+		limit = {
+			has_province_flag = tc_for_TC
+			NOT = { had_province_flag = { flag = tc_for_TC days = 1095 } }
+		}
+		remove_core = FROM
+		clr_province_flag = tc_for_TC
+	}
+}
+
